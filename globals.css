@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-brand-sand text-brand-steel;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11", "ss01";
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* 2027 Interaction Design - Standardized Motion */
+.snappy {
+  @apply transition-all duration-medium ease-standard;
+}
+
+.card-premium-2027 {
+  @apply bg-brand-white rounded-hub-xl shadow-card-default snappy border border-utility-borderLight;
+}
+
+.card-premium-2027:hover {
+  @apply -translate-y-1 shadow-card-hover border-utility-borderMedium;
+}
+
+.card-premium-2027:active {
+  @apply -translate-y-0.5 scale-[0.99] duration-fast ease-accelerate;
+}
+
+/* Micro-Animations */
+@keyframes mintRipple {
+  0% { box-shadow: 0 0 0 0 rgba(62, 214, 165, 0.4); }
+  70% { box-shadow: 0 0 0 12px rgba(62, 214, 165, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(62, 214, 165, 0); }
+}
+
+.animate-ripple:active {
+  animation: mintRipple 600ms cubic-bezier(0.2, 0.0, 0.2, 1);
+}
+
+@keyframes badgePulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); filter: brightness(1.05); }
+  100% { transform: scale(1); }
+}
+
+.group:hover .badge-pulse-2027 {
+  animation: badgePulse 180ms cubic-bezier(0.2, 0.0, 0.2, 1) 1;
+}
+
+/* Shimmer State */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-shimmer-hub {
+  background: linear-gradient(90deg, #F7F4EF 25%, #E8E3DB 50%, #F7F4EF 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s infinite linear;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-brand-sandDark rounded-full;
+}

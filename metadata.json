@@ -1,0 +1,8 @@
+{
+  "name": "FinderHub-Ontario-V2",
+  "description": "Ontario's definitive trade directory. Harvesting Plumbers, HVAC, Electricians, Roofers, and Drywallers across the entire province.",
+  "requestFramePermissions": [
+    "geolocation",
+    "camera"
+  ]
+}
