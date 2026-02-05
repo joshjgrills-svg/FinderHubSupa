@@ -5,10 +5,10 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? '';
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? '';
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  // Keep this as a non-fatal warning so build doesn't fail when env vars are missing.
-  // Vercel should have these set in Project Settings > Environment Variables for production.
+  // Non-fatal warning so builds don't fail when env vars are missing.
+  // Set these in Vercel Project Settings > Environment Variables for Production/Preview.
   // eslint-disable-next-line no-console
-  console.warn('Supabase env vars are missing: NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY');
+  console.warn('Supabase env vars missing: NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY');
 }
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
