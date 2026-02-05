@@ -1,18 +1,22 @@
-// app/layout.tsx
-import './globals.css';
-import type { ReactNode } from 'react';
+/* app/globals.css */
 
-export const metadata = {
-  title: 'FinderHubSupa',
-  description: 'Deployment test for FinderHubSupa',
-};
-
-export default function RootLayout({ children }: { children: ReactNode }) {
-  return (
-    <html lang="en">
-      <body style={{ margin: 0, fontFamily: 'Inter, system-ui, sans-serif' }}>
-        {children}
-      </body>
-    </html>
-  );
+/* Minimal global styles so Next.js build can resolve the import */
+:root {
+  --bg: #ffffff;
+  --text: #0f172a;
+  --muted: #6b7280;
 }
+
+html, body, #__next {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a { color: inherit; text-decoration: underline; }
+pre { white-space: pre-wrap; word-break: break-word; }
