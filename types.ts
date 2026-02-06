@@ -1,5 +1,5 @@
 // types.ts
-// Lightweight, dependency-free types used across the app.
+// Dependency-free types used across the app.
 // Replaces firebase/firestore Timestamp import to avoid requiring firebase package.
 
 export type Timestamp = Date | string | number;
@@ -26,3 +26,15 @@ export type ViewType =
   | 'become-partner'
   | 'intelligence'
   | string;
+
+/* Professional type used by constants and components.
+   Keep it minimal for preview builds; extend later from backup if needed. */
+export type Professional = {
+  id: string;
+  name?: string;
+  trade?: TradeType;
+  city?: string;
+  verified?: boolean;
+  createdAt?: Timestamp;
+  updatedAt?: Timestamp;
+};
