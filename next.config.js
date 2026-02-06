@@ -1,13 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  output: 'standalone', 
-  images: {
-    unoptimized: true,
-  },
   experimental: {
-    serverComponentsExternalPackages: ['playwright', 'puppeteer'],
-  },
-}
+    appDir: true
+  }
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
