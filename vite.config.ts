@@ -1,16 +1,5 @@
+// vite.config.ts
+// Removed Vite configuration for Next.js preview build.
+// Keeping this file as a harmless stub to avoid requiring the 'vite' package.
 
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-
-export default defineConfig({
-  plugins: [react()],
-  base: './', // Ensures assets are loaded correctly relative to index.html
-  server: {
-    port: 3000,
-    open: true
-  },
-  build: {
-    outDir: 'dist',
-    sourcemap: false
-  }
-});
+export default {};
