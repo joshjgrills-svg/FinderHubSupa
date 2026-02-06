@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 
 export const metadata = {
   title: 'FinderHubSupa',
-  description: 'Deployment test for FinderHubSupa',
+  description: 'Deployment test for FinderHubSupa'
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
