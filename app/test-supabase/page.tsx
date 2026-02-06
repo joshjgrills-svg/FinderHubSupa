@@ -1,47 +1,39 @@
 // app/test-supabase/page.tsx
-'use client';
-
-import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 
-export default function TestSupabasePage() {
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [message, setMessage] = useState<string>('');
+export default async function TestSupabasePage() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? '';
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? '';
 
-  useEffect(() => {
-    async function runTest() {
-      setStatus('loading');
-      try {
-        const { data, error, status: st } = await supabase
-          .from('providers')
-          .select('id')
-          .limit(1);
+  let status = 'OK';
+  let message = 'Supabase env vars present.';
 
-        if (error) {
-          setStatus('error');
-          setMessage(`Query error: ${error.message} (status ${st})`);
-          return;
-        }
-
-        setStatus('success');
-        setMessage(`Query success: ${Array.isArray(data) ? `${data.length} rows` : JSON.stringify(data)}`);
-      } catch (err: any) {
-        setStatus('error');
-        setMessage(`Unexpected error: ${err?.message || String(err)}`);
+  if (!url || !key) {
+    status = 'MISSING';
+    message = 'NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY is not set.';
+  } else {
+    try {
+      // Lightweight check: attempt a GET to the Supabase project root with the anon key.
+      // This runs at request time on the server and is non-blocking for build.
+      const res = await fetch(url, { method: 'GET', headers: { apikey: key } });
+      if (!res.ok) {
+        status = `UNREACHABLE (${res.status})`;
+        message = `Supabase responded with status ${res.status}.`;
+      } else {
+        message = `Supabase reachable at ${url}`;
       }
+    } catch (err: any) {
+      status = 'ERROR';
+      message = String(err?.message ?? err);
     }
-
-    runTest();
-  }, []);
+  }
 
   return (
-    <main style={{ padding: 24, fontFamily: 'Inter, system-ui, sans-serif' }}>
-      <h1 style={{ fontSize: 24, marginBottom: 12 }}>Supabase Connection Test</h1>
-      <p>Status: <strong>{status}</strong></p>
-      <pre style={{ background: '#f6f8fa', padding: 12, borderRadius: 8 }}>{message}</pre>
-      <p style={{ marginTop: 12, color: '#666' }}>
-        If you see "Query success" or a Supabase error message, the client connected to Supabase.
-      </p>
+    <main>
+      <h1>Supabase Test</h1>
+      <p><strong>Status:</strong> {status}</p>
+      <pre style={{ background: '#f3f4f6', padding: 12 }}>{message}</pre>
+      <p>Ensure NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY are set in Vercel env vars.</p>
     </main>
   );
 }
