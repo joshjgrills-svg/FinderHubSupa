@@ -1,39 +1,45 @@
 // app/test-supabase/page.tsx
-import { supabase } from '@/lib/supabaseClient';
+import React from 'react';
+import { supabase } from '../../src/lib/supabaseClient';
 
 export default async function TestSupabasePage() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? '';
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? '';
-
-  let status = 'OK';
-  let message = 'Supabase env vars present.';
-
-  if (!url || !key) {
-    status = 'MISSING';
-    message = 'NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY is not set.';
-  } else {
-    try {
-      // Lightweight check: attempt a GET to the Supabase project root with the anon key.
-      // This runs at request time on the server and is non-blocking for build.
-      const res = await fetch(url, { method: 'GET', headers: { apikey: key } });
-      if (!res.ok) {
-        status = `UNREACHABLE (${res.status})`;
-        message = `Supabase responded with status ${res.status}.`;
-      } else {
-        message = `Supabase reachable at ${url}`;
-      }
-    } catch (err: any) {
-      status = 'ERROR';
-      message = String(err?.message ?? err);
-    }
+  // Safe runtime check: do not throw if env not set
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    return (
+      <main style={{ padding: 24 }}>
+        <h1>Supabase Test</h1>
+        <p><strong>Status:</strong> <em>No env configured</em></p>
+        <p><strong>Message:</strong> NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY missing</p>
+      </main>
+    );
   }
 
-  return (
-    <main>
-      <h1>Supabase Test</h1>
-      <p><strong>Status:</strong> {status}</p>
-      <pre style={{ background: '#f3f4f6', padding: 12 }}>{message}</pre>
-      <p>Ensure NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY are set in Vercel env vars.</p>
-    </main>
-  );
+  // Try a lightweight call; keep it safe and fast
+  try {
+    const { data, error } = await supabase.from('profiles').select('id').limit(1);
+    if (error) {
+      return (
+        <main style={{ padding: 24 }}>
+          <h1>Supabase Test</h1>
+          <p><strong>Status:</strong> Error</p>
+          <p><strong>Message:</strong> {error.message}</p>
+        </main>
+      );
+    }
+    return (
+      <main style={{ padding: 24 }}>
+        <h1>Supabase Test</h1>
+        <p><strong>Status:</strong> OK</p>
+        <p><strong>Message:</strong> Able to query Supabase; sample rows: {Array.isArray(data) ? data.length : 0}</p>
+      </main>
+    );
+  } catch (err: any) {
+    return (
+      <main style={{ padding: 24 }}>
+        <h1>Supabase Test</h1>
+        <p><strong>Status:</strong> Exception</p>
+        <p><strong>Message:</strong> {String(err?.message ?? err)}</p>
+      </main>
+    );
+  }
 }
