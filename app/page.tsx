@@ -1,12 +1,13 @@
 // app/page.tsx
-export default function Home() {
+import React from 'react';
+import Link from 'next/link';
+
+export default function HomePage() {
   return (
-    <main>
-      <h1>FinderHubSupa</h1>
-      <p>Root page — deployment test.</p>
-      <p>
-        Visit <a href="/test-supabase">/test-supabase</a> to check Supabase connection variables.
-      </p>
+    <main style={{ padding: 24 }}>
+      <h1>FinderHub Preview</h1>
+      <p>Preview environment for reset-to-clean branch.</p>
+      <p><Link href="/test-supabase">Open /test-supabase</Link></p>
     </main>
   );
 }
