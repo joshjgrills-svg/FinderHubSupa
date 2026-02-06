@@ -1,11 +1,11 @@
 // app/page.tsx
-export default function HomePage() {
+export default function Home() {
   return (
-    <main style={{ padding: 24, fontFamily: 'Inter, system-ui, sans-serif' }}>
-      <h1 style={{ fontSize: 28, marginBottom: 12 }}>FinderHub — Deployment Test</h1>
-      <p>This is the root page. If you see this, the site no longer returns 404 for <code>/</code>.</p>
+    <main>
+      <h1>FinderHubSupa</h1>
+      <p>Root page — deployment test.</p>
       <p>
-        Test the Supabase page at <a href="/test-supabase">/test-supabase</a>.
+        Visit <a href="/test-supabase">/test-supabase</a> to check Supabase connection variables.
       </p>
     </main>
   );
