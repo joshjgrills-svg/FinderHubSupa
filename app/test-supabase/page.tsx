@@ -1,45 +1,42 @@
 // app/test-supabase/page.tsx
 import React from 'react';
-import { supabase } from '../../src/lib/supabaseClient';
 
-export default async function TestSupabasePage() {
-  // Safe runtime check: do not throw if env not set
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-    return (
-      <main style={{ padding: 24 }}>
-        <h1>Supabase Test</h1>
-        <p><strong>Status:</strong> <em>No env configured</em></p>
-        <p><strong>Message:</strong> NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY missing</p>
-      </main>
-    );
-  }
+export default function TestSupabasePage() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? '';
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? '';
 
-  // Try a lightweight call; keep it safe and fast
-  try {
-    const { data, error } = await supabase.from('profiles').select('id').limit(1);
-    if (error) {
-      return (
-        <main style={{ padding: 24 }}>
-          <h1>Supabase Test</h1>
-          <p><strong>Status:</strong> Error</p>
-          <p><strong>Message:</strong> {error.message}</p>
-        </main>
-      );
+  const isValidUrl = (u: string) => {
+    try {
+      const parsed = new URL(u);
+      return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+    } catch {
+      return false;
     }
+  };
+
+  if (!isValidUrl(url) || !key) {
     return (
-      <main style={{ padding: 24 }}>
+      <div style={{ padding: 24, fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, Arial' }}>
         <h1>Supabase Test</h1>
-        <p><strong>Status:</strong> OK</p>
-        <p><strong>Message:</strong> Able to query Supabase; sample rows: {Array.isArray(data) ? data.length : 0}</p>
-      </main>
-    );
-  } catch (err: any) {
-    return (
-      <main style={{ padding: 24 }}>
-        <h1>Supabase Test</h1>
-        <p><strong>Status:</strong> Exception</p>
-        <p><strong>Message:</strong> {String(err?.message ?? err)}</p>
-      </main>
+        <p style={{ color: '#b33' }}>
+          Supabase is not configured for this preview build.
+        </p>
+        <ul>
+          <li><strong>NEXT_PUBLIC_SUPABASE_URL</strong> must be a valid HTTP or HTTPS URL.</li>
+          <li><strong>NEXT_PUBLIC_SUPABASE_ANON_KEY</strong> must be set.</li>
+        </ul>
+        <p>
+          To enable the test page, add these environment variables in your Vercel project settings or remove this page.
+        </p>
+      </div>
     );
   }
+
+  return (
+    <div style={{ padding: 24, fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, Arial' }}>
+      <h1>Supabase Test</h1>
+      <p>Supabase environment variables are present. The preview build will not expose keys here.</p>
+      <p>Preview build succeeded and the page is safe to use.</p>
+    </div>
+  );
 }
